@@ -1,8 +1,8 @@
 import React from "react"
 import Nav from "./components/Nav/Nav";
-import Houses from "./components/Houses/Houses"
-import HouseDetail from "./components/HouseDetail/HouseDetail";
-import CreateHouse from "./components/CreateHouse/CreateHouse";
+import Main from "./components/Main/Main"
+import Sets from "./components/Sets/Sets";
+import Series from "./components/Series/Series";
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -20,9 +20,9 @@ function App() {
       <Wrapper>
         <Nav />
         <Switch>
-          <Route exact path="/" component={Houses} />
-          <Route exact path="/houses/:houseId" component={HouseDetail} />
-          <Route exact path="/house/create" component={CreateHouse} />
+          <Route exact path="/" component={Main} />
+          <Route exact path="/series" component={Series} />
+          <Route exact path="/sets" component={Sets} />
         </Switch>
       </Wrapper>
     </div>
