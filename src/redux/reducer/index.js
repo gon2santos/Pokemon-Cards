@@ -1,42 +1,27 @@
 
 // Importa las actions types que necesites acá:
 import {
-  CREATE_HOUSE,
-  DELETE_HOUSE,
-  GET_ALL_HOUSES,
-  GET_HOUSE,
+  GET_ALL_SETS,
+  GET_CARDS,
 } from "../actions";
 
 const initialState = {
-  houses: [],
-  house: {},
+  sets: {},
+  cards: {},
 };
 
 const rootReducer = (state = initialState, action) => {
-  switch (
-    action.type
-    // Acá va tu código:
-    ) {
-      case GET_ALL_HOUSES:
+  switch (action.type) {
+      case GET_ALL_SETS:
         return {
           ...state,
-          houses: action.payload
+          sets: action.payload
         }
-      case GET_HOUSE:
+      case GET_CARDS:
         return {
           ...state,
-          house: action.payload
+          cards: action.payload
         }
-      case CREATE_HOUSE:
-        return {
-          ...state,
-          houses: state.houses.concat(action.payload)
-        }
-      case DELETE_HOUSE:
-        return {
-          ...state,
-          houses: state.houses.filter(m => m.id !== action.payload)
-      }
       default:
         return state;
     }

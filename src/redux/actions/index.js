@@ -1,7 +1,6 @@
-export const GET_ALL_HOUSES = "GET_ALL_HOUSES";
-export const CREATE_HOUSE = "CREATE_HOUSE";
-export const GET_HOUSE = "GET_HOUSE";
-export const DELETE_HOUSE = "DELETE_HOUSE";
+export const GET_ALL_SETS = "GET_ALL_SETS";
+export const GET_CARDS = "GET_CARDS";
+
 
 // Fijarse que la sintaxis de nuestra Action creator es distinta a lo que venimos haciendo. Esto es
 // debido al uso del middleware "thunk", el cual nos permite trabajar con acciones asincrónicas.
@@ -15,12 +14,12 @@ export const DELETE_HOUSE = "DELETE_HOUSE";
 // Esto lo vas a poder hacer utilizando fetch.
 // export const getAllHouses = () => dispatch => {};
 
-export function getAllHouses() {
+export function getAllSets(id) {
     return async function(dispatch) {
-      return fetch("http://localhost:3001/houses")
+      return fetch(`https://api.pokemontcg.io/v2/sets?q=series:${id}`)
         .then(response => response.json())
         .then(response => {
-          dispatch({ type: GET_ALL_HOUSES, payload: response});
+          dispatch({ type: GET_ALL_SETS, payload: response});
         });
     };
   }
@@ -31,30 +30,12 @@ export function getAllHouses() {
 // Ojo, hacer un console.log de la respuesta desde el back. En nuestro reducer esperamos un objeto;
 // export const getHouse = () => dispatch => {};
 
-export function getHouse(id) {
+export function getCards(id) {
     return async function(dispatch) {
-      return fetch(`http://localhost:3001/houses/${id}`)
+      return fetch(`https://api.pokemontcg.io/v2/cards?q=set.name:${id}`)
         .then(response => response.json())
         .then(response => {
-          dispatch({ type: GET_HOUSE, payload: response});
+          dispatch({ type: GET_CARDS, payload: response});
         });
     };
-  }
-  
-
-// Inicializamos id en 3, para que nuestros próximos ID's no se pisen con los existentes.
-// La vas a usar en la funcion createHouse, descomentala cuando te haga falta;
-let _id = 4;
-
-// Desde el componente ejecutamos la action creator, pasandole como argumento los values que vamos a utilizar para crear la house.
-
-export function createHouse(pl) {
-    return { type: CREATE_HOUSE, payload: {...pl, id: _id++} };
-  }
-
-// Desde el componente ejecutamos la action creator, pasandole como argumento el id de la house que queremos eliminar.
-
-export function deleteHouse(id) {
-    return { type: DELETE_HOUSE, payload: id };
-  
   }

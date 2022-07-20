@@ -22,7 +22,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Main} />
           <Route exact path="/series" component={Series} />
-          <Route exact path="/sets" component={Sets} />
+          {/* <Route exact path="/sets" component={Sets} /> */}
+          <Route exact path="/sets/:seriesid" component={Sets} />
         </Switch>
       </Wrapper>
     </div>

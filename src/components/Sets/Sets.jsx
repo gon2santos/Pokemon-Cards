@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import setsImg from '../../img-cp2/sets-img.jpg';
 import styled from 'styled-components';
+import { getAllSets } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux'
+
 
 // SI O SI FUNCTIONAL COMPONENT! SE ROMPEN LOS TEST EN CASO CONTRARIO!!
 
@@ -24,7 +27,15 @@ const Image = styled.img`
   border-radius: 10px;
 `;
 
-const Sets = () => {
+const Sets = (props) => {
+
+  const dispatch = useDispatch();
+  const set = useSelector((state) => state.sets)
+
+  React.useEffect(() => {
+    dispatch(getAllSets(props.match.params.seriesid));
+  }, [])
+
   return (
     <Wrapper>
       <div>
@@ -32,26 +43,12 @@ const Sets = () => {
         <div>
           <h3>Select a Set: </h3>
           <ul>
-{/*           <Route exact path="/houses/:houseId" component={Sets} />  <<-- usa este formato para pasar ids en los siguientes links */}
-              <li><Link to="/series">Sword & Shield</Link></li>
-              <li><Link to="/series">Sun & Moon</Link></li>
-              <li><Link to="/series">XY</Link></li>
-              <li><Link to="/series">Black & White</Link></li>
-              <li><Link to="/series">HeartGold & SoulSilver</Link></li>
-              <li><Link to="/series">Platinum</Link></li>
-              <li><Link to="/series">Diamond & Pearl</Link></li>
-              <li><Link to="/series">EX</Link></li>
-              <li><Link to="/series">E-Card</Link></li>
-              <li><Link to="/series">Neo</Link></li>
-              <li><Link to="/series">Gym</Link></li>
-              <li><Link to="/series">Classic</Link></li>
-              <li><Link to="/series">POP</Link></li>
-              <li><Link to="/series">Promos</Link></li>
-              <li><Link to="/series">Trainer Kits</Link></li>
-              <li><Link to="/series">Other</Link></li>
-              <li><Link to="/series">Collections</Link></li>
+            {/* https://api.pokemontcg.io/v2/cards?q=set.name:Sword%20&%20Shield */} {/* <<-- trae el json de las cartas de un set */}
+            {/* https://api.pokemontcg.io/v2/sets?q=series:base */} {/* <<-- trae el json de los sets de una serie */}
+            {set.data?.map(s =>
+              <li><a href={`https://api.pokemontcg.io/v2/cards?q=set.id:${s.id}`}>{s.name}</a></li>
+            )}
           </ul>
-
         </div>
       </div>
     </Wrapper>
