@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom'
 import setsImg from '../../img-cp2/sets-img.jpg';
 import styled from 'styled-components';
-import { getAllSets } from '../../redux/actions';
+import { getAllSets, getCards } from '../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux'
+import { saveAs } from "file-saver";
 
 
 // SI O SI FUNCTIONAL COMPONENT! SE ROMPEN LOS TEST EN CASO CONTRARIO!!
@@ -28,13 +28,34 @@ const Image = styled.img`
 `;
 
 const Sets = (props) => {
-
   const dispatch = useDispatch();
   const set = useSelector((state) => state.sets)
+  const cards = useSelector((state) => state.cards)
 
-  React.useEffect(() => {
+
+  useEffect(() => {
     dispatch(getAllSets(props.match.params.seriesid));
   }, [])
+
+
+
+  const saveFile = () => {
+    if (cards.data) {
+      for (var i = 0; i < cards.data.length; ++i) {
+        (function (n) {
+          setTimeout(function () {
+            saveAs(cards.data[n].images.large, cards.data[n].id);
+          }, n * 4000);
+        }(i));
+      }
+    }
+  };
+
+
+  const retrieveCards = (id) => { //pasar el id del set para guardar en el state.cards las cartas
+    dispatch(getCards(id))
+  };
+
 
   return (
     <Wrapper>
@@ -46,9 +67,14 @@ const Sets = (props) => {
             {/* https://api.pokemontcg.io/v2/cards?q=set.name:Sword%20&%20Shield */} {/* <<-- trae el json de las cartas de un set */}
             {/* https://api.pokemontcg.io/v2/sets?q=series:base */} {/* <<-- trae el json de los sets de una serie */}
             {set.data?.map(s =>
-              <li><a href={`https://api.pokemontcg.io/v2/cards?q=set.id:${s.id}`}>{s.name}</a></li>
+              <li>
+                <a href={`https://api.pokemontcg.io/v2/cards?q=set.id:${s.id}`}>{s.name}</a>
+                <button onClick={() => dispatch(getCards(s.id))}>Save cards to state</button>
+                <button onClick={saveFile}>Download cards images</button>
+              </li>
             )}
           </ul>
+
         </div>
       </div>
     </Wrapper>
@@ -56,6 +82,3 @@ const Sets = (props) => {
 };
 
 export default Sets;
-
-
-

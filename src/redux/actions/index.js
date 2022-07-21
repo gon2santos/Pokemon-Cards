@@ -32,10 +32,11 @@ export function getAllSets(id) {
 
 export function getCards(id) {
     return async function(dispatch) {
-      return fetch(`https://api.pokemontcg.io/v2/cards?q=set.name:${id}`)
+      return fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${id}`)
         .then(response => response.json())
         .then(response => {
           dispatch({ type: GET_CARDS, payload: response});
-        });
+        })
+        .then(console.log(`Trayendo cartas desde https://api.pokemontcg.io/v2/cards?q=set.id:${id} ...`))
     };
   }
